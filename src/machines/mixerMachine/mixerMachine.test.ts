@@ -1,4 +1,4 @@
-import { interpret, waitFor } from "xstate";
+import { interpret } from "xstate";
 import { machine } from "./mixerMachine";
 import { test } from "vitest";
 
