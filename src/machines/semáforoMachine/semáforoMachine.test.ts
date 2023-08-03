@@ -1,9 +1,9 @@
 import { interpret } from "xstate";
-import { semáforoMachine } from "./semáforoMachine";
+import { machine } from "./semáforoMachine";
 import { test } from "vitest";
 
 test.only("semáforoMachine interpreter", async () => {
-  const actor = interpret(semáforoMachine);
+  const actor = interpret(machine);
 
   const subscription = actor.subscribe({
     next(snapshot) {

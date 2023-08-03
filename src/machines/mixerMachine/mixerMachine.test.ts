@@ -1,9 +1,9 @@
 import { interpret, waitFor } from "xstate";
-import { mixerMachine } from "./mixerMachine";
+import { machine } from "./mixerMachine";
 import { test } from "vitest";
 
 test.only("mixerMachine interpreter", async () => {
-  const actor = interpret(mixerMachine);
+  const actor = interpret(machine);
 
   const subscription = actor.subscribe({
     next(snapshot) {
