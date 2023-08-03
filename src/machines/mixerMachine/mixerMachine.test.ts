@@ -1,13 +1,14 @@
 import { interpret } from "xstate";
 import { machine } from "./mixerMachine";
 import { test } from "vitest";
+import { printSnapshot } from "../../utils/tests/printSnapshot";
 
-test.only("mixerMachine interpreter", async () => {
+test("mixerMachine interpreter", async () => {
   const actor = interpret(machine);
 
   const subscription = actor.subscribe({
     next(snapshot) {
-      console.log(".", snapshot.value, ":", snapshot.context);
+      printSnapshot({ snapshot, __filename });
     },
     error(data) {
       console.error(data);
@@ -25,16 +26,26 @@ test.only("mixerMachine interpreter", async () => {
   actor.send({ type: "LIGAR" });
 
   actor.send({ type: "AUMENTAR" });
+
+  actor.send({ type: "DESLIGAR" });
+  actor.send({ type: "LIGAR" });
+
   actor.send({ type: "AUMENTAR" });
-  actor.send({ type: "AUMENTAR" });
-  actor.send({ type: "AUMENTAR" });
-  actor.send({ type: "DIMINUIR" });
-  actor.send({ type: "DIMINUIR" });
-  actor.send({ type: "DIMINUIR" });
   actor.send({ type: "DIMINUIR" });
   actor.send({ type: "DIMINUIR" });
 
   actor.send({ type: "DESLIGAR" });
+  actor.send({ type: "LIGAR" });
+
+  actor.send({ type: "AUMENTAR" });
+
+  actor.send({ type: "DESLIGAR" });
+  actor.send({ type: "LIGAR" });
+
+  actor.send({ type: "AUMENTAR" });
+
+  actor.send({ type: "DESLIGAR" });
+  actor.send({ type: "LIGAR" });
 
   subscription.unsubscribe();
 }, 50000);

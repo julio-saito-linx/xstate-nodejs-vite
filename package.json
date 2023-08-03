@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test_silent": "reset; vitest --silent",
+    "test_ui": "reset; vitest --ui"
   },
   "devDependencies": {
+    "@vitest/ui": "^0.34.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.1"
