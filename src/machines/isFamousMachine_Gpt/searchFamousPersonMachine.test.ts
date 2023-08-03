@@ -1,9 +1,9 @@
-import { interpret } from 'xstate'
-import { machine } from './isFamousMachine_Gpt'
+import { interpret, waitFor } from 'xstate'
+import { machine } from './searchFamousPersonMachine'
 import { test } from 'vitest'
 import { printSnapshot } from '../../utils/tests/printSnapshot'
 
-test('isFamousMachine_Gpt interpreter', async () => {
+test('searchFamousPersonMachine interpreter', async () => {
   const actor = interpret(machine)
 
   const subscription = actor.subscribe({
@@ -23,7 +23,12 @@ test('isFamousMachine_Gpt interpreter', async () => {
   // Ativa a máquina
   actor.start()
 
-  actor.send({ type: 'SEARCH', query: 'gpt' })
+  actor.send({ type: 'SEARCH', name_query: 'Ben Morisson' })
+
+  await waitFor(
+    actor,
+    (state) => state.matches('famous') || state.matches('notFamous')
+  )
 
   subscription.unsubscribe()
-}, 50000)
+}, 500)
