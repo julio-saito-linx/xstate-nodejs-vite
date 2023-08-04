@@ -11,7 +11,7 @@ type Events = { type: 'SEARCH'; name_query: string }
 
 export const machine = createMachine<Context, Events>(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QEtYDECGBbA9gV1gFkMBjAC2QDswB9AcQAcAXAOmQgBswBiAZQFEAggCUAwgAkA2gAYAuolAMcsZE2Q5KCkAA9EARj0BWFgGYATAA4AnNL0AWPWel3DANj0AaEAE9EAWj0AdlcWKxdDMysrVwszOzsrAF9Er1RMXAJicipaRlZYMAwAJ2zKKG4IDTA2SgA3HABrarTsfCJSCmp6ZhYC4tKoBCp6kgw1DRlZSa0lFXHNJB1EQwSWC3WTV0jpSytAr18EP0iTFhjXGL29PcDNw2TU9FbMjpzu-MKSzvKwIqKcIosBgcMYAMwBWDYTwy7VKuR6fS+VEGwxwo3mk2mi1mqnUC1AugQhkM0hYbmkFnMUTcgWkhgO-lJrhMhlpdmkVhMVlZ0lsFgeIBaMKynXhrCKcDwHCYsG4WMUylxGi0hIselOeh2ZkCgWJ0mCDgZRyCGougQsdhMelcUSs-JSguhbRFbzyLAlsClMrlenk2MV8xViDVGq1Or1Bs8Pn8BjsZwsOoS1itgWt9odlBwEDgWiFzteXTyMwDeKDRxsLF5KcCUQS0mZ+2jRxMapY1pcLJtZhiO1cArzLzh7zYnDAxbmpcWhL8djMlek1drNmZFyNARWLG7HfNDnNvPuDoHsNFw8RA3HSvxSwQ2r0m6M6rMegsbhcrjsa6CgRYuvfdnO6w1hc-ZOoOJ5uh6XrwP6E7KlOwbmCwLh0juFquDsa7anOJJciyTgpk+IHpPmQ5uqCzzQQqsFXoSmpBGc763HSC7EkEn66khT6GCm+qBP+6xERRLqFj0mZMMRBAXoG8EIJqHJkrY1pcvY1zvp+1qhLOCSBJYykJgejwScero9ORyAcHgEpSZOBLLJSP4xNYFg7BYWzcka9m8mEWrROsQQHskQA */
+    /** @xstate-layout N4IgpgJg5mDOIC5SzAQwE4GMAWAxVAtgPYCusACmOrEQHYCyqOAlrWAHTMQA2YAxAGUAogEEASgGEAEgG0ADAF1EoAA5FYzAC7M6ykAA9EAZgAsJ9gA4jAJiNyAjBesBOAOxyAbB4A0IAJ6I1tbmwSYArBYmzm4m9ibWAL4JvigYOPjEZJTUdIwsbOypWNisUHwQdBysAG5EANYcRemEpBRUNAxMJQVN3VAINUSYqNp08grjemoao7R6hggmcs7scmuOTmZypiY+-ogAtPbWlvbbFnIWzrthRs72HkkpaMUZrdkded2NL-llVOgiOh2CpuCMAGZAgiFX54FpZdq5LqsH5pPoDWi1YazcaTJAgaZaHRzfELMKucxyayOOSxORhRxBXwBBD2MIediuYIeZxGOzHPlPEC9N4InKdfIcHBgTB1AD66DgJG4mj4eNU6iJulJiAsFg5SxMriMDIi1jkFOZiDcnPCHjCDrWzhclyFIvhbXFXxR7GlsoVSpVavsSnxhNm811+vYhuNpqcFpMVtZ7PYzgsx3NRjiHiMFluSWSIFoRAgcD07syns+yLYU01EZ1CFsrlOfLOzipYU7xuTRzW7GseuCQ7MefZYTdsNF1aRks4PDA9ZmxMjCFMYXYD3zRh59O7lv2648lL19ns0Vu1IdU7RM4+c++MLRpWXWpJoAWQ83Gfbyy7PZGMmvJpscDLOPGZgeBYt6vB6D4Sk+fryoqsDKpob6Np+uphCctj2K40EZh41gePSyYWOwRhctRYQmBc7gPCasHNFWCHegU4Iephq5NmcURbq4BFka4zjQXRewsmJtoUqYzrkru1wsXCbGIohPolpoM48dq2GsrSKwEcJFpifmuzJmym5BCeXJcmRSyRMp95qRxHBccw3AkIqOkfgYiAeOelh3G4Nj3Ceu7JqYJxkdSDgMlE9KJIWQA */
     id: 'searchFamousPersonMachine',
     initial: 'idle',
     context: {
@@ -43,7 +43,10 @@ export const machine = createMachine<Context, Events>(
       },
       check_result: {
         always: [
-          { target: 'famous', guard: 'isFamous' },
+          {
+            target: 'famous',
+            guard: ({ context }) => context.resultCount > 100,
+          },
           { target: 'notFamous' },
         ],
       },
@@ -64,6 +67,7 @@ export const machine = createMachine<Context, Events>(
       searching_invoke: fromPromise(async ({ input }) => {
         // Aqui iria o código que realmente faz a pesquisa na internet
         // Para este exemplo, estamos apenas 'simulando' esta consulta
+        console.log('--  input: ', input)
         return Promise.resolve({
           resultCount: Math.random() * 200,
         })
@@ -75,9 +79,6 @@ export const machine = createMachine<Context, Events>(
           return (event as any).output.resultCount
         },
       }),
-    },
-    guards: {
-      isFamous: ({ context }) => context.resultCount > 100, // se a conta de resultados for maior que 500, consideramos o nome como famoso
     },
   }
 )

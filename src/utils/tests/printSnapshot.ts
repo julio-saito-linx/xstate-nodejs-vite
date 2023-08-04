@@ -6,7 +6,7 @@ export function printSnapshot({
   __filename: string
 }) {
   console.log(
-    `[${__filename.replace(/.*\/([\wá]+?)\..*/g, '$1')}]:`,
+    `[${__filename.replace(/.*\/([\wáéíóúãàèìòùõ]+?)\..*/g, '$1')}]:`,
     snapshot.value,
     ':',
     snapshot.context

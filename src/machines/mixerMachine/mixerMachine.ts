@@ -2,56 +2,56 @@ import { createMachine } from 'xstate'
 
 export const machine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFkCWAPMAnAdBOANqlAIYQD2AxADICSA4gIIBKA2gAwC6ioADubFQAXVOQB2PEOkQB2AKw4ATAA4ZARmVqZATjmbt2gMwAaEAE9EK7TgBsawwBZtyh0+0P1AX0+m0mXESkFJQAIgCiAMp0TGxckvyCIuKS0gg27DgOKnIG8i4yMoaKphYIaio42jY2hvKKRexyhjaK3r4Y2DiBZOQ4-EJgYgDGqCRqlIwAqshhAHIAKiwc3EggCcKiEqupTYqVBfWKLVWK7NollsrWdo7OrgYeag5tIH6d3RR95APDo4oT0zmi1iKz4Ag2yW2iBcaiUTjkijUTycRzUFwQVls9icLjcj2ePleHQCxB6Xx+IxI-xCtGQtFmk1oIPi4KSW1AOwcsPYdhsykR-LkcjUNnR5WUlWqtQRDSaNjkLzeJKCvX6g0phlCtPpjOZq3WbJS0KcOEMZu0Mh5FuUchkYoqVRqdVlzQVLzE5Hw8FWSpZiU2RrKeyyNtyeg8hQ06IAtA4FM4jKdVIZtOwzcpFcS8IRSRQ-RD2VJEDUcFcI8pNFcNIohejEQo4-I1Laa2oDCLM-4urnyPnDVCMc3TTIa-K42nmg5lOiuZkKwj1Dp2E3DG72l2PqrvurRmo+wGB4ZVKbHI4Cg5qjJqnWh425VVq9oa533j3yTuqfvIRzi1UcOx2HKKdynYLInBvBtbWFFthXbQwX2VMk1V+EhDC-QtUjUACFAFU52BtepDGXCDMltJxXHnGxtAQ7sVRwAALVBYCEdDAyOQxh1HORxzNeUxVnG0clOPl7EKKpvG8IA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFkCWAPMAnAdAFwFcsA7SAfQHsAzKgYgBUBVAJQDkyB5VgbQAYBdRKAAOFWKjyoKxISHSIAbAFYcAFgDMAJiWqAHEs2aAnKqOGANCACeiAIy9eOXgtW8lD9buVKXAX1+WaJi4hCTk0gws7BwAYjF8gkggouKS0rLyCAqaOJq86gDsvF56Crq2LpY2CJrlOEq2BarG6g26zn4BIEHY+ESkEJTEOKIA7thkADZgAG5gk2S2tACSrADCzACiAIIAyptkAAocAOqbzAmyKRJSMkmZDY7ZBYWaTRVGZlV26uq5qnp3LYlF4jLZVP5AhheqEBkMRhRxlgprN5mRNCt1ls9gdjmcLgIrmIbul7ogvE9GgCyp9VODbN8ELZfv9AbxgaDwZDutCQv1wsMxhNpnMFhiACKbDY7fZHU7nS5Ja5pO6gB7AnAFApGbyqHw6dSM9SuTUG+wKXja+wVbk9PlhQbSBFIlGisjqWiS6U4uX4xUiYkqjLkl71Qy6Iwg2zGXS6Q3WRDGxwFM3OS1g9kKfxdYgUCBwWR2ompW7BpmqXL5IolLzlSoJhAAWgKChwzJbRl4hmy6gUJltvL6DsoNGLJNVckUKi71brBjjmkZtk7moUjVjZTXFQMA+CQ7hpIDJcPk5qvZwXmXLZ7SlaFSXthwSeBBV0mgU7yUTV3MP5jsFiLCqiCy2GOQZkggrQ5EYLy8GC0Y6LG8bVJohQ4DBxrZM076xq+P72geAEuiKaKaGBpYQUUratAYqhNDBSgggojKoQU6EvKoWHdrhuj4fuArOkBbrqORJ6ZPYPjoSCdFaG4Pj1ihaEYZxmjYWUuh4V0dr8f+OAABaoLAeAUFg1RHuOZa1BWl4wQoN53sxDZGLoF62O0bgaTBeRwdmvhAA */
     id: 'Mixer',
-    initial: 'desligado',
+    initial: 'turned_off',
     states: {
-      desligado: {
+      turned_off: {
         on: {
-          LIGAR: {
-            target: '#Mixer.ligado.hist',
+          TURN_ON: {
+            target: '#Mixer.turned_on.history',
             reenter: false,
           },
         },
       },
-      ligado: {
-        initial: 'potencia1',
+      turned_on: {
+        initial: 'power_level_1',
         states: {
-          potencia1: {
+          power_level_1: {
             on: {
-              AUMENTAR: {
-                target: 'potencia2',
+              INCREASE_POWER: {
+                target: 'power_level_2',
                 reenter: false,
               },
             },
           },
-          potencia2: {
+          power_level_2: {
             on: {
-              AUMENTAR: {
-                target: 'potencia3',
+              INCREASE_POWER: {
+                target: 'power_level_3',
                 reenter: false,
               },
-              DIMINUIR: {
-                target: 'potencia1',
+              DECREASE_POWER: {
+                target: 'power_level_1',
                 reenter: false,
               },
             },
           },
-          potencia3: {
+          power_level_3: {
             on: {
-              DIMINUIR: {
-                target: 'potencia2',
+              DECREASE_POWER: {
+                target: 'power_level_2',
                 reenter: false,
               },
             },
           },
-          hist: {
+          history: {
             type: 'history',
           },
         },
         on: {
-          DESLIGAR: {
-            target: 'desligado',
+          TURN_OFF: {
+            target: 'turned_off',
             reenter: false,
           },
         },
@@ -59,10 +59,10 @@ export const machine = createMachine(
     },
     types: {
       events: {} as
-        | { type: 'LIGAR' }
-        | { type: 'DESLIGAR' }
-        | { type: 'AUMENTAR' }
-        | { type: 'DIMINUIR' },
+        | { type: 'TURN_ON' }
+        | { type: 'TURN_OFF' }
+        | { type: 'INCREASE_POWER' }
+        | { type: 'DECREASE_POWER' },
     },
   },
   {

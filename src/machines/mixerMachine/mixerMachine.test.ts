@@ -23,29 +23,19 @@ test('mixerMachine interpreter', async () => {
   // Ativa a máquina
   actor.start()
 
-  actor.send({ type: 'LIGAR' })
+  actor.send({ type: 'TURN_ON' })
+  actor.send({ type: 'INCREASE_POWER' })
+  actor.send({ type: 'INCREASE_POWER' })
+  actor.send({ type: 'DECREASE_POWER' })
 
-  actor.send({ type: 'AUMENTAR' })
+  actor.send({ type: 'TURN_OFF' })
+  actor.send({ type: 'TURN_ON' })
 
-  actor.send({ type: 'DESLIGAR' })
-  actor.send({ type: 'LIGAR' })
+  actor.send({ type: 'INCREASE_POWER' })
+  actor.send({ type: 'DECREASE_POWER' })
+  actor.send({ type: 'DECREASE_POWER' })
 
-  actor.send({ type: 'AUMENTAR' })
-  actor.send({ type: 'DIMINUIR' })
-  actor.send({ type: 'DIMINUIR' })
-
-  actor.send({ type: 'DESLIGAR' })
-  actor.send({ type: 'LIGAR' })
-
-  actor.send({ type: 'AUMENTAR' })
-
-  actor.send({ type: 'DESLIGAR' })
-  actor.send({ type: 'LIGAR' })
-
-  actor.send({ type: 'AUMENTAR' })
-
-  actor.send({ type: 'DESLIGAR' })
-  actor.send({ type: 'LIGAR' })
+  actor.send({ type: 'TURN_OFF' })
 
   subscription.unsubscribe()
 }, 50000)
