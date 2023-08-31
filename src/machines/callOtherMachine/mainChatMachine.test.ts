@@ -29,12 +29,7 @@ test('mainMachine', async () => {
 
   if (mainState.value === 'ask_name') {
     // askNameMachine
-    const askNameActor = createActor(askNameMachine, {
-      state: {},
-      input: {
-        abc: 123,
-      },
-    })
+    const askNameActor = createActor(askNameMachine)
     askNameActor.start()
     await waitFor(askNameActor, (state) => state.matches('check_name'))
     askNameActor.send({
