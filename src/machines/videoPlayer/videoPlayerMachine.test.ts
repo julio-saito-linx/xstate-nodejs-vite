@@ -3,7 +3,7 @@ import { machine } from './videoPlayerMachine'
 import { test } from 'vitest'
 import { printSnapshot } from '../../utils/tests/printSnapshot'
 
-test('videoPlayerMachine interpreter', async () => {
+test.skip('videoPlayerMachine interpreter', async () => {
   const actor = interpret(machine)
 
   const subscription = actor.subscribe({

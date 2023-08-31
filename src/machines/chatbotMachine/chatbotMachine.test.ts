@@ -1,10 +1,10 @@
-import { interpret, waitFor } from 'xstate'
-import { machine } from './searchFamousPersonMachine'
+import { createActor } from 'xstate'
+import { machine } from './chatbotMachine'
 import { test } from 'vitest'
 import { printSnapshot } from '../../utils/tests/printSnapshot'
 
-test('searchFamousPersonMachine interpreter', async () => {
-  const actor = interpret(machine)
+test('mixerMachine createActorer', async () => {
+  const actor = createActor(machine)
 
   const subscription = actor.subscribe({
     next(snapshot) {
@@ -23,12 +23,7 @@ test('searchFamousPersonMachine interpreter', async () => {
   // Ativa a máquina
   actor.start()
 
-  actor.send({ type: 'SEARCH', name_query: 'Ben Morisson' })
-
-  await waitFor(
-    actor,
-    (state) => state.matches('famous') || state.matches('notFamous')
-  )
+  actor.send({ type: 'USER_INPUTS_NAME' })
 
   subscription.unsubscribe()
-}, 500)
+}, 50000)

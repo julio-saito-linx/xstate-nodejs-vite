@@ -1,10 +1,10 @@
-import { interpret } from 'xstate'
+import { createActor } from 'xstate'
 import { machine } from './mixerMachine'
 import { test } from 'vitest'
 import { printSnapshot } from '../../utils/tests/printSnapshot'
 
-test('mixerMachine interpreter', async () => {
-  const actor = interpret(machine)
+test('mixerMachine createActorer', async () => {
+  const actor = createActor(machine)
 
   const subscription = actor.subscribe({
     next(snapshot) {
